@@ -1,32 +1,41 @@
-# ベースイメージを指定
-FROM golang:1.18 as builder
+# # ベースイメージを指定
+# FROM golang:1.18 as builder
 
-# ワーキングディレクトリを設定
-WORKDIR /app
+# # ワーキングディレクトリを設定
+# WORKDIR /app
 
-# Goの依存関係を管理するためのファイルをコピー
-COPY go.mod go.sum ./
+# # Goの依存関係を管理するためのファイルをコピー
+# COPY go.mod go.sum ./
 
-# 依存関係をダウンロード
-RUN go mod download
+# # 依存関係をダウンロード
+# RUN go mod download
 
-# ソースコードをコピー
-COPY . .
+# # ソースコードをコピー
+# COPY . .
 
-# 実行可能ファイルをビルド
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o server .
+# # 実行可能ファイルをビルド
+# RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o server .
 
-# 実行ステージ
-FROM alpine:latest  
-RUN apk --no-cache add ca-certificates
+# # 実行ステージ
+# FROM alpine:latest  
+# RUN apk --no-cache add ca-certificates
 
-WORKDIR /root/
+# WORKDIR /root/
 
-# ビルドした実行ファイルをコピー
-COPY --from=builder /app/server .
+# # ビルドした実行ファイルをコピー
+# COPY --from=builder /app/server .
 
-# ポート80を開放
-EXPOSE 80
+# # ポート80を開放
+# EXPOSE 80
 
-# 実行可能ファイルを実行
-CMD ["./server"]
+# # 実行可能ファイルを実行
+# CMD ["./server"]
+
+# nginxを使用
+FROM nginx:alpine
+
+# 作成したHTMLファイルをnginxのデフォルトの公開ディレクトリにコピー
+COPY index.html /usr/share/nginx/html/index.html
+
+# nginxを起動する
+CMD ["nginx", "-g", "daemon off;"]
