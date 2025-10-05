@@ -107,7 +107,7 @@ func main() {
 
 	// 8080ポートでサーバーを起動
 	fmt.Println("HTTPサーバを起動しました。ポート: " + apiport)
-	err := http.ListenAndServe("0.0.0.0:"+apiport, nil) //0.0.0.0追加
+	err := http.ListenAndServe("0.0.0.0:"+apiport, nil) //　0.0.0.0追加
 	if err != nil {
 		fmt.Println("HTTPサーバの起動に失敗しました: ", err)
 	}
