@@ -22,6 +22,9 @@ RUN apk --no-cache add ca-certificates
 
 WORKDIR /root/
 
+# API_PORTを環境変数で指定
+ENV API_PORT=80
+
 # ビルドした実行ファイルをコピー
 COPY --from=builder /app/server .
 
